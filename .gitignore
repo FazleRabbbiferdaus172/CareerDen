@@ -9,6 +9,8 @@ wheels/
 # Virtual environments
 .venv
 
+.env
+
 # idea
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/.gitignore
@@ -16,3 +18,5 @@ wheels/
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/vcs.xml
+/tex_template/Resume.tex
+/renderd_tex/Resume.tex
