@@ -9,6 +9,8 @@ wheels/
 # Virtual environments
 .venv
 
+.env
+
 # idea
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/.gitignore
