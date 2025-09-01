@@ -23,6 +23,7 @@ try:
     if not os.path.exists(PDF_PATH):
         raise FileNotFoundError("%s path Does Not Exist." % PDF_PATH)
 except Exception as e:
+    # Todo: instead of raising maybe creating the files will be better?
     raise e
 else:
     env = Environment(loader=FileSystemLoader(TEX_TEMPLATE_PATH),
@@ -33,9 +34,15 @@ else:
                       comment_start_string='<COMMENT>',
                       comment_end_string='</COMMENT>',
                       )
+
+    # Todo: template name is hardcoded need to change
+
     template_name = env.list_templates()[0]
-    template = env.get_template(template_name)
-    tex_string = template.render()
+    if template_name:
+        template = env.get_template(template_name)
+        tex_string = template.render()
+    else:
+        raise Exception("Template Not Found")
 
     with open(os.path.join(RENDERED_TEX_PATH, template_name), "w") as template_file:
         template_file.write(tex_string)
