@@ -40,6 +40,8 @@ else:
     template_name = env.list_templates()[0]
     if template_name:
         template = env.get_template(template_name)
+
+        # Todo: render needs context of dict.
         tex_string = template.render()
     else:
         raise Exception("Template Not Found")
