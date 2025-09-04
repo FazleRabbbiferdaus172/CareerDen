@@ -15,7 +15,10 @@ class Profile(models.Model):
     Contact_details = models.ManyToManyField('core.Contact', related_name='profiles', blank=True)
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return self.get_full_name()
+
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class AcademicDetail(models.Model):

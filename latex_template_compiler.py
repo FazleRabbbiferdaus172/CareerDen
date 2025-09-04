@@ -4,7 +4,7 @@ import subprocess
 from jinja2 import Environment, FileSystemLoader
 from dotenv import dotenv_values
 
-def render_latex_pdf():
+def render_latex_pdf(**context):
     try:
         config = dotenv_values(".env")
         TEX_TEMPLATE_PATH = config["TEX_TEMPLATE_PATH"]
@@ -43,7 +43,7 @@ def render_latex_pdf():
             template = env.get_template(template_name)
 
             # Todo: render needs context of dict.
-            tex_string = template.render()
+            tex_string = template.render(context)
         else:
             raise Exception("Template Not Found")
 
