@@ -1,7 +1,10 @@
   <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
-  <button hx-get="/clicked" hx-swap="innerHTML" hx-target="#search-results">
-    Click Me
+  <button hx-get="/clicked" hx-swap="innerHTML" hx-target="#content-box">
+    Render Template
   </button>
-<div id="search-results">
+  <button hx-get="/requied-context-info" hx-swap="innerHTML" hx-target="#content-box">
+    Get required context info
+  </button>
+<div id="content-box">
     ...
 </div>
