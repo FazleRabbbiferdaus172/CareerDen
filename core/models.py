@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
+from config.settings import addable_model
 
 
 # Create your models here.
@@ -197,3 +198,6 @@ class ProjectTag(models.Model):
 
     def __str__(self):
         return self.name
+
+# Todo: make it a model?
+addable_model.add(Profile)

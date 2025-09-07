@@ -128,3 +128,5 @@ MEDIA_URL = '/pdf/'
 
 
 MEDIA_ROOT = BASE_DIR / 'pdf'
+
+addable_model = set()
