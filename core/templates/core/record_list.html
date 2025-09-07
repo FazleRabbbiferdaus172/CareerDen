@@ -1,0 +1,22 @@
+{% load get_record_value_by_field %}
+
+{% for model in models %}
+<table>
+    <thead>
+    {% for field_name in model.field_names %}
+        <th>{{ field_name }}</th>
+    {% endfor %}
+    </thead>
+    <tbody>
+    {% for rec in model.records %}
+        <tr>
+            {% for field_name in model.field_names %}
+                <td>
+                    {{ rec|get_record_value_by_field:field_name }}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
