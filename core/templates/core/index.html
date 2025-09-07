@@ -1,10 +1,17 @@
-  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
-  <button hx-get="/clicked" hx-swap="innerHTML" hx-target="#content-box">
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
+<script src="{% static 'core/drag_n_drop.js' %}"></script>
+<button hx-get="/clicked" hx-swap="innerHTML" hx-target="#content-box">
     Render Template
-  </button>
-  <button hx-get="/requied-context-info" hx-swap="innerHTML" hx-target="#content-box">
+</button>
+<button hx-get="/requied-context-info" hx-swap="innerHTML" hx-target="#content-box">
     Get required context info
-  </button>
+</button>
+
+<div id="model_list">
+    {% include "core/record_list.html" with model=models %}
+</div>
+
 <div id="content-box">
     ...
 </div>
