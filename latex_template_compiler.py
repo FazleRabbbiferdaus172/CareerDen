@@ -5,7 +5,7 @@ from jinja2 import Environment, FileSystemLoader, meta
 from dotenv import dotenv_values
 
 
-def render_latex_pdf(**context):
+def render_latex_pdf(context):
     try:
         config = dotenv_values(".env")
         TEX_TEMPLATE_PATH = config["TEX_TEMPLATE_PATH"]
@@ -60,7 +60,7 @@ def render_latex_pdf(**context):
             subprocess.run(["docker", "exec", container_name, "pdflatex", "--output-directory=./%s" % PDF_PATH,
                             "./%s/%s" % (RENDERED_TEX_PATH, template_name)], check=True)
         except Exception as e:
-            return e.message
+            print(e)
         else:
             return os.path.join(PDF_PATH, template_name.replace(".tex", ".pdf"))
 
