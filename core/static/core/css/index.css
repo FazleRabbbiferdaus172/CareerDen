@@ -1,0 +1,14 @@
+.selected-cell {
+    border: darkseagreen solid 1px;
+    background-color: cadetblue;
+    color: aliceblue;
+}
+
+.selectable-cell:hover {
+    cursor: pointer;
+    color: cadetblue;
+}
+
+body {
+    background-color: aliceblue;
+}
