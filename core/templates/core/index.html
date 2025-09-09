@@ -1,13 +1,11 @@
 {% load static %}
 <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
-<script src="{% static 'core/drag_n_drop.js' %}"></script>
+<script src="{% static 'core/js/drag_n_drop.js' %}"></script>
+<link rel="stylesheet" href="{% static 'core/css/index.css' %}">
 
 <div style="border: black solid 5px">
     <button hx-get="/clicked" hx-swap="innerHTML" hx-target="#content-box">
         Render Template
-    </button>
-    <button hx-get="/requied-context-info" hx-swap="innerHTML" hx-target="#content-box">
-        Get required context info
     </button>
 </div>
 
