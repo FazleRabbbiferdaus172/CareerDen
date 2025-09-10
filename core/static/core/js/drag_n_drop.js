@@ -1,35 +1,43 @@
 let dataToInsert = null;
+let hasSelectedData = []
+
 function dragstartHandler(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
+    ev.dataTransfer.setData("text", ev.target.id);
 }
 
 function dragoverHandler(ev) {
-  ev.preventDefault();
+    ev.preventDefault();
 }
 
 function dropHandler(ev) {
-  ev.preventDefault();
-  const data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+
+function generate_button_to_add() {
+    const button_to_add = document.createElement("button");
+    button_to_add.textContent = "Insert";
+    button_to_add.addEventListener("click", insertInto);
+    button_to_add.className = "context-insert";
+    return button_to_add;
 }
 
 function addTo(ev) {
     ev.stopPropagation();
     dataToInsert = ev.target.previousSibling.innerText;
     let context_children = document.getElementById("context-list").children;
-    const button_to_add = document.createElement("button");
-    button_to_add.textContent = "Insert";
-    button_to_add.addEventListener("click", insertInto);
-    button_to_add.className = "context-insert";
+
     // button_to_add.addEventListener()
     for (const child of context_children) {
-        // debugger;
-        child.appendChild(button_to_add);
+        let another = generate_button_to_add();
+        child.appendChild(another);
     }
 }
 
 
 function insertInto(ev) {
+    ev.stopPropagation()
     ev.target.previousElementSibling.value = dataToInsert;
     dataToInsert = null;
     let insert_buttons = document.getElementsByClassName("context-insert");
@@ -44,7 +52,11 @@ function toggleCellSelection(ev) {
     if (!td.classList.contains("selectable-cell")) {
         td = ev.target.parentElement;
     }
-    if (!td.classList.contains("selected-cell")) {td.classList.add("selected-cell")}
-    else {td.classList.remove("selected-cell")}
+    if (!td.classList.contains("selected-cell")) {
+        td.classList.add("selected-cell");
+        hasSelectedData.append("")
+    } else {
+        td.classList.remove("selected-cell");
+    }
 
 }

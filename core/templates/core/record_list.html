@@ -11,7 +11,7 @@
     {% for rec in model.records %}
         <tr>
             {% for field_name in model.field_names %}
-                <td class="selectable-cell" data-rec-id="{{ rec.id }}" data-rec-mode="{{ model.model_name }}" onclick="toggleCellSelection(event)">
+                <td class="selectable-cell" data-rec-id="{{ rec.id }}" data-rec-mode="{{ model.model_name }}" onclick="toggleCellSelection(event)" draggable="true">
                     <span>{{ rec|get_record_value_by_field:field_name }}</span><button onclick="addTo(event)">Add</button>
                 </td>
             {% endfor %}
