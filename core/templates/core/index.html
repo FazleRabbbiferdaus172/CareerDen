@@ -3,21 +3,26 @@
 <script src="{% static 'core/js/drag_n_drop.js' %}"></script>
 <link rel="stylesheet" href="{% static 'core/css/index.css' %}">
 
-<div style="border: black solid 5px">
-    <button hx-get="/clicked" hx-swap="innerHTML" hx-target="#content-box">
-        Render Template
-    </button>
+
+<div class="grid-container">
+    <div class="header" style="border: black solid 5px">
+        <button hx-get="/clicked" hx-swap="innerHTML" hx-target="#content-box">
+            Render Template
+        </button>
+    </div>
+
+    <div class="tool-box-half" id="model_list" style="border: black solid 5px">
+        {% include "core/record_list.html" with model=models %}
+    </div>
+
+    <div class="tool-op-half" id="required-context" style="border: black solid 5px">
+        {% include "core/required_context_set.html" with required_template_context=required_template_context %}
+    </div>
+
+    <div class="content" id="content-box">
+        ...
+    </div>
+
 </div>
 
 
-<div id="model_list" style="border: black solid 5px">
-    {% include "core/record_list.html" with model=models %}
-</div>
-
-<div id="required-context" style="border: black solid 5px">
-    {% include "core/required_context_set.html" with required_template_context=required_template_context %}
-</div>
-
-<div id="content-box">
-    ...
-</div>
