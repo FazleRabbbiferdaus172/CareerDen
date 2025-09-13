@@ -14,33 +14,4 @@ body {
 }
 
 
-.grid-container {
-    font-family: sans-serif;
-    display: grid;
-    justify-items: stretch;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 20px;
-}
-
-.header {
-    grid-column: 1 / 13;
-    grid-row: 1
-}
-
-.tool-box-half {
-    grid-column: 1 / 6;
-    grid-row: 2;
-}
-
-.tool-op-half {
-    grid-column: 6/13;
-    grid-row: 2;
-}
-
-.content {
-    grid-column: 1/13;
-    grid-row: 3/6;
-    overflow: scroll;
-}
-
 
