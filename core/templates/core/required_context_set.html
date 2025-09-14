@@ -1,12 +1,11 @@
-<h3>Context required are: </h3>
-<form id="checked-contacts"
-      hx-post="/render_template/"
-      hx-target="#content-box">
-        {% csrf_token %}
-    <ul id="context-list">
-        {% for k in required_template_context %}
-            <li><span>{{ k }} : </span><input id="rc-{{ k }}" name="{{ k }}" type="text" ondrop="dropHandler"></li>
-        {% endfor %}
-    </ul>
-    <input type="submit" value="Render Template" class="btn primary">
-</form>
+<div id="required-context-area">
+    <h3>Context required are: </h3>
+    <div id="required-context-detail">
+        <ul id="context-list">
+            {% for k in required_template_context %}
+                <li><span>{{ k }} : </span><input id="rc-{{ k }}" name="{{ k }}" type="text" ondrop="dropHandler"></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <button type="submit" value="Render Template" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-post="/render_template/" hx-target="#content-box" hx-include="[id='context-list']">Render Template</button>
+</div>
