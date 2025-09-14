@@ -1,22 +1,30 @@
 {% load get_record_value_by_field %}
 
 {% for model in models %}
-<table>
-    <thead>
-    {% for field_name in model.field_names %}
-        <th>{{ field_name }}</th>
-    {% endfor %}
-    </thead>
-    <tbody>
-    {% for rec in model.records %}
-        <tr>
+    <div>
+        <h3>{{ model.model_name }}</h3>
+        <table>
+            <thead>
             {% for field_name in model.field_names %}
-                <td class="selectable-cell" data-cell-value="{{ rec|get_record_value_by_field:field_name }}" data-rec-field_name="{{ field_name }}" data-rec-id="{{ rec.id }}" data-rec-model="{{ model.model_name }}" onclick="toggleCellSelection(event)" draggable="true">
-                    <span>{{ rec|get_record_value_by_field:field_name }}</span><button onclick="addTo(event)">Add</button>
-                </td>
+                <th>{{ field_name }}</th>
             {% endfor %}
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+            {% for rec in model.records %}
+                <tr>
+                    {% for field_name in model.field_names %}
+                        <td class="selectable-cell" data-cell-value="{{ rec|get_record_value_by_field:field_name }}"
+                            data-rec-field_name="{{ field_name }}" data-rec-id="{{ rec.id }}"
+                            data-rec-model="{{ model.model_name }}" onclick="toggleCellSelection(event)"
+                            draggable="true">
+                            <span>{{ rec|get_record_value_by_field:field_name }}</span>
+                            <button onclick="addTo(event)">Add</button>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 {% endfor %}
