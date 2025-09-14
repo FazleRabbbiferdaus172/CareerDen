@@ -10,7 +10,7 @@ from config.settings import addable_model
 def index(request):
     models = []
     for model in addable_model:
-        m = {'field_names': [field.name for field in Profile._meta.fields],
+        m = {'field_names': [field.name for field in model._meta.fields],
              'records': model.objects.all(),
              'model_name': model._meta.model_name
              }

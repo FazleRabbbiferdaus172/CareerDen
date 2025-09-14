@@ -13,7 +13,7 @@ class Profile(models.Model):
     professional_details = models.ManyToManyField('core.ProfessionalDetail',
                                                   related_name='profiles', blank=True)
     academic_details = models.ManyToManyField('core.AcademicDetail', related_name='profiles', blank=True)
-    Contact_details = models.ManyToManyField('core.Contact', related_name='profiles', blank=True)
+    contact_details = models.ManyToManyField('core.Contact', related_name='profiles', blank=True)
 
     def __str__(self):
         return self.get_full_name()
@@ -93,6 +93,9 @@ class Address(models.Model):
 class SocialMediaPlatform(models.Model):
     name = models.CharField(max_length=100)
     contact = models.ForeignKey(Contact, related_name='social_medias', on_delete=models.CASCADE)
+
+    def get_link(self):
+        return ", ".join([link.__str__() for link in self.links.all()])
 
     def __str__(self):
         return self.name
@@ -201,3 +204,4 @@ class ProjectTag(models.Model):
 
 # Todo: make it a model?
 addable_model.add(Profile)
+addable_model.add(Contact)
