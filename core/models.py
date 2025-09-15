@@ -205,3 +205,6 @@ class ProjectTag(models.Model):
 # Todo: make it a model?
 addable_model.add(Profile)
 addable_model.add(Contact)
+addable_model.add(Phone)
+addable_model.add(Email)
+addable_model.add(SocialMediaLink)
