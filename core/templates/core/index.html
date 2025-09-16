@@ -1,28 +1,29 @@
 {% load static %}
-<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
-<script src="{% static 'core/js/drag_n_drop.js' %}"></script>
-<link rel="stylesheet" href="{% static 'core/css/index.css' %}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Career Den</title>
+    <link rel="stylesheet" href="{% static 'core/css/index.css' %}">
+    {% block extra_css %}
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
+    <script src="{% static 'core/js/drag_n_drop.js' %}"></script>
+    {% block extra_script %}
+    {% endblock %}
+</head>
+<body>
+<header class="header" style="border: black solid 5px">
+{#    Todo: remove hard coded url, better use urls django way#}
+    <button hx-get="graph/" hx-swap="innerHTML" hx-target="main" hx-trigger="click delay:1s">
+        See graph
+    </button>
+    <button hx-get="latex_main/" hx-swap="innerHTML" hx-target="main" hx-trigger="load, click delay:1s">
+        Render Template
+    </button>
+</header>
+<main>
 
-
-<div class="grid-container">
-    <div class="header" style="border: black solid 5px">
-        <button hx-get="/clicked" hx-swap="innerHTML" hx-target="#content-box">
-            Render Template
-        </button>
-    </div>
-
-    <div class="tool-box-half" id="model_list" style="border: black solid 5px">
-        {% include "core/record_list.html" with model=models %}
-    </div>
-
-    <div class="tool-op-half" id="required-context" style="border: black solid 5px">
-        {% include "core/required_context_set.html" with required_template_context=required_template_context %}
-    </div>
-
-    <div class="content" id="content-box">
-        ...
-    </div>
-
-</div>
-
-
+</main>
+</body>
+</html>
