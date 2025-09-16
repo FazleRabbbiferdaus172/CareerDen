@@ -9,9 +9,18 @@
     color: cadetblue;
 }
 
-body {
-    background-color: aliceblue;
-}
+/*Todo: implmenet grid for body to give header and main section required spaces*/
+
+/*body {*/
+/*    background-color: aliceblue;*/
+/*    grid-template-columns: repeat(12, 1fr);*/
+/*    grid-template-rows: 100px 1fr;*/
+/*    display: grid;*/
+/*    box-sizing: border-box;*/
+/*    height: 98vh;*/
+/*    width: 98vw;*/
+/*    padding: 1vh 1vw;*/
+/*}*/
 
 
 .grid-container {
