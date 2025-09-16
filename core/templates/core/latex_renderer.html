@@ -1,0 +1,13 @@
+<div class="grid-container">
+    <div class="tool-box-half" id="model_list" style="border: black solid 5px">
+        {% include "core/record_list.html" with model=models %}
+    </div>
+
+    <div class="tool-op-half" id="required-context" style="border: black solid 5px">
+        {% include "core/required_context_set.html" with required_template_context=required_template_context %}
+    </div>
+
+    <div class="content" id="content-box">
+        ...
+    </div>
+</div>
