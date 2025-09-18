@@ -11,54 +11,66 @@
 
 /*Todo: implmenet grid for body to give header and main section required spaces*/
 
-/*body {*/
-/*    background-color: aliceblue;*/
-/*    grid-template-columns: repeat(12, 1fr);*/
-/*    grid-template-rows: 100px 1fr;*/
-/*    display: grid;*/
-/*    box-sizing: border-box;*/
-/*    height: 98vh;*/
-/*    width: 98vw;*/
-/*    padding: 1vh 1vw;*/
-/*}*/
+body {
+    background-color: aliceblue;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 5% 85% 5%;
+    display: grid;
+    box-sizing: border-box;
+    height: 99%;
+    width: 100%;
+    padding: 10px;
+    gap: 10px;
+    place-self: center;
+    overflow: clip;
+}
 
+body > header {
+    grid-column: 1 / 13;
+    grid-row: 1;
+}
+
+body > main {
+    grid-column: 1 / 13;
+    grid-row: 2;
+}
+
+body > footer {
+    grid-column: 1 / 13;
+    grid-row: 3;
+}
 
 .grid-container {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: 40% 57%;
     gap: 20px;
-    height: 97vh;
-    padding: 2vh;
+    height: 100%;
     box-sizing: border-box;
-}
-
-.header {
-    grid-column: 1 / 13;
-    grid-row: 1
+    overflow: clip;
 }
 
 .tool-box-half {
     grid-column: 1 / 6;
-    grid-row: 2;
+    grid-row: 1;
+    overflow: scroll;
 }
 
 .tool-op-half {
     grid-column: 6/13;
-    grid-row: 2;
+    grid-row: 1;
+    overflow: scroll;
 }
 
 .content {
     grid-column: 1/13;
-    grid-row: 3;
+    grid-row: 2;
     overflow-y: auto; /* Adds scrollbar if content overflows */
     place-self: stretch;
     text-align: left;
-    min-height: 0;
 }
 
 .content embed {
     display: block;
     margin: 20px auto;
 }
-
