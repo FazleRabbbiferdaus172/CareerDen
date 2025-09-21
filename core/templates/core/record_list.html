@@ -12,13 +12,13 @@
             </thead>
             <tbody>
             {% for rec in model.records %}
-                <tr>
+                <tr class="selectable" data-rec-model="{{ model.model_name }}" data-rec-id="{{ rec.id }}">
 {#                    Todo: add support for selecting and adding rows to context#}
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" onchange="toggleSelection(event)"></td>
                     {% for field_name in model.field_names %}
-                        <td class="selectable-cell" data-cell-value="{{ rec|get_record_value_by_field:field_name }}"
-                            data-rec-field_name="{{ field_name }}" data-rec-id="{{ rec.id }}"
-                            data-rec-model="{{ model.model_name }}" onclick="toggleCellSelection(event)"
+                        <td class="selectable" data-cell-value="{{ rec|get_record_value_by_field:field_name }}"
+                            data-rec-field-name="{{ field_name }}" data-rec-id="{{ rec.id }}"
+                            data-rec-model="{{ model.model_name }}" onclick="toggleSelection(event)"
                             draggable="true">
                             <span>{{ rec|get_record_value_by_field:field_name }}</span>
 {#                            <button onclick="addTo(event)">Add</button>#}
