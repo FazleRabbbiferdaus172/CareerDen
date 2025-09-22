@@ -123,3 +123,17 @@ function toggleSelection(ev) {
 function isEmptySelectedData() {
     return true ? selectedData.length === 0 : false;
 }
+
+
+function generatePostParams(ev) {
+    const inputs = document.querySelectorAll('#context-list input[type="text"]');
+
+    const structuredData = {};
+
+    inputs.forEach(input => {
+        ev.detail.parameters[input.name] = {
+            'value': input.value,
+            'type': input.dataset.type
+        };
+    });
+}
