@@ -8,6 +8,7 @@ from .utils.latex_service import get_required_context
 
 from .models import Profile
 from config.settings import addable_model
+import json
 # Create your views here.
 
 def index(request):
@@ -36,8 +37,9 @@ def latex_main(request):
 def render_template(request):
     context = {}
     for key in request.POST.keys():
-        if key != 'csrfmiddlewaretoken':
-            context[key] = request.POST[key]
+        if key not in ['csrfmiddlewaretoken', 'encoding']:
+            key_value = json.loads(request.POST[key])
+            context[key] = key_value["value"]
     latex = render_latex_pdf(context)
     return render(request, "core/clicked.html", {"pdf_path": latex})
 
