@@ -83,19 +83,22 @@ function insertInto(ev) {
 
 function addDataToSelection(dataElement) {
     dataElement.classList.add("selected");
-    dataElement.dataset.selectedDataIndex = selectedData.length + 1;
+    dataElement.dataset.selectedDataIndex = selectedData.length;
     selectedData.push({...dataElement.dataset, type: dataElement.tagName.toLowerCase()})
 }
 
 function removeDataFromSelection(dataElement) {
     dataElement.classList.remove("selected");
-    const to_remove = {...dataElement.dataset, type: dataElement.tagName.toLowerCase()};
-    selectedData = selectedData.filter((data) => {
-            // if (data.type !== "cell") return true;
-            return !(data.cellValue === to_remove.cellValue && data.recFieldName === to_remove.recFieldName
-                && data.recId === to_remove.recId && data.recModel === to_remove.recModel && data.type === to_remove.type);
-        }
-    );
+    debugger;
+    const dataElementIndex = parseInt(dataElement.dataset.selectedDataIndex);
+    selectedData.splice(dataElementIndex, 1);
+    // const to_remove = {...dataElement.dataset, type: dataElement.tagName.toLowerCase()};
+    // selectedData = selectedData.filter((data) => {
+    //         // if (data.type !== "cell") return true;
+    //         return !(data.cellValue === to_remove.cellValue && data.recFieldName === to_remove.recFieldName
+    //             && data.recId === to_remove.recId && data.recModel === to_remove.recModel && data.type === to_remove.type);
+    //     }
+    // );
 }
 
 function toggleSelection(ev) {
