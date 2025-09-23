@@ -28,6 +28,7 @@ def render_latex_pdf(context):
         # Todo: instead of raising maybe creating the files will be better?
         return e.message
     else:
+        # Todo: Use a singleton env
         env = Environment(loader=FileSystemLoader(TEX_TEMPLATE_PATH),
                           block_start_string='<BLOCK>',
                           block_end_string='</BLOCK>',
@@ -35,6 +36,8 @@ def render_latex_pdf(context):
                           variable_end_string='</VAR>',
                           comment_start_string='<COMMENT>',
                           comment_end_string='</COMMENT>',
+                          trim_blocks=True,
+                          lstrip_blocks=True
                           )
 
         # Todo: template name is hardcoded need to change
@@ -88,6 +91,7 @@ def get_required_context():
         # Todo: instead of raising maybe creating the files will be better?
         return e.message
     else:
+        # Todo: Use a singleton env
         env = Environment(loader=FileSystemLoader(TEX_TEMPLATE_PATH),
                           block_start_string='<BLOCK>',
                           block_end_string='</BLOCK>',
@@ -95,6 +99,8 @@ def get_required_context():
                           variable_end_string='</VAR>',
                           comment_start_string='<COMMENT>',
                           comment_end_string='</COMMENT>',
+                          trim_blocks=True,
+                          lstrip_blocks=True
                           )
 
         # Todo: template name is hardcoded need to change
