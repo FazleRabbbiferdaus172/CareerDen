@@ -1,4 +1,21 @@
+.table-collapse {
+    border-collapse: collapse;
+}
+
+
 .selected {
+    border: darkseagreen solid 1px;
+    background-color: cadetblue;
+    color: aliceblue;
+}
+
+.table-header-highlight {
+    border: yellow solid 1px;
+    background-color: antiquewhite;
+    cursor: pointer;
+}
+
+.table-header-selected {
     border: darkseagreen solid 1px;
     background-color: cadetblue;
     color: aliceblue;

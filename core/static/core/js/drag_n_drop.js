@@ -58,20 +58,30 @@ function addTo(ev) {
 
 
 function insertInto(ev) {
+    // inserts selected data into input fields
     ev.stopPropagation();
 
     const insertCellData = function () {
-        ev.target.previousElementSibling.value = selectedData.filter(data => data.type === 'td').map((data) => data.cellValue).join(" ");
-        ev.target.previousElementSibling.dataset.type = 'td'
+        elementToInsert.value = selectedData.filter(data => data.type === 'td').map((data) => data.cellValue).join(" ");
+        elementToInsert.dataset.type = 'td';
+        elementToInsert.dataset.cells = JSON.stringify([]);
     }
+
     const insertRowData = function () {
-        ev.target.previousElementSibling.value = selectedData.filter(data => data.type === 'tr').map((data) => ""+data.recModel+"#"+data.recId ).join(", ");
-        ev.target.previousElementSibling.dataset.type = 'tr'
+        elementToInsert.value = selectedData.filter(data => data.type === 'tr').map((data) => "" + data.recModel + "#" + data.recId).join(", ");
+        elementToInsert.dataset.type = 'tr';
+        const selectedTh = document.querySelectorAll('th.table-header-selected');
+        elementToInsert.dataset.cells = JSON.stringify([...selectedTh].map(th => th.dataset.recFieldName));
+        selectedTh.forEach( th => th.classList.remove('table-header-selected'))
+        if (selectedTh.length > 0) {
+            selectedTh[0].parentElement.classList.remove("table-header-highlight");
+        }
     }
+
+    const elementToInsert = ev.target.previousElementSibling;
     if (selectedData[0].type === 'td') {
         insertCellData()
-    }
-    else {
+    } else {
         insertRowData()
     }
     dataToInsert = null;
@@ -89,16 +99,23 @@ function addDataToSelection(dataElement) {
 
 function removeDataFromSelection(dataElement) {
     dataElement.classList.remove("selected");
-    debugger;
     const dataElementIndex = parseInt(dataElement.dataset.selectedDataIndex);
     selectedData.splice(dataElementIndex, 1);
-    // const to_remove = {...dataElement.dataset, type: dataElement.tagName.toLowerCase()};
-    // selectedData = selectedData.filter((data) => {
-    //         // if (data.type !== "cell") return true;
-    //         return !(data.cellValue === to_remove.cellValue && data.recFieldName === to_remove.recFieldName
-    //             && data.recId === to_remove.recId && data.recModel === to_remove.recModel && data.type === to_remove.type);
-    //     }
-    // );
+}
+
+function toggleHeaderSelection(ev) {
+    ev.stopPropagation();
+    if (ev.target.tagName.toLowerCase() === "th" && ev.target.parentElement.classList.contains("table-header-highlight")) {
+        ev.target.classList.add("table-header-selected");
+    }
+}
+
+function heightLightTableHeader(dataElement) {
+    if (dataElement.tagName.toLowerCase() === 'tr') {
+        const theadSelector = "#record-list-" + dataElement.dataset.recModel + " thead > tr";
+        let theadElement = document.querySelector(theadSelector);
+        theadElement.classList.add("table-header-highlight");
+    }
 }
 
 function toggleSelection(ev) {
@@ -107,7 +124,7 @@ function toggleSelection(ev) {
     while (!dataTarget.classList.contains("selectable")) {
         dataTarget = dataTarget.parentElement;
     }
-
+    heightLightTableHeader(dataTarget);
     if (!dataTarget.classList.contains("selected")) {
         addDataToSelection(dataTarget);
     } else {
@@ -136,7 +153,8 @@ function generatePostParams(ev) {
     inputs.forEach(input => {
         ev.detail.parameters[input.name] = {
             'value': input.value,
-            'type': input.dataset.type
+            'type': input.dataset.type,
+            "cells": input.dataset.cells,
         };
     });
 }
