@@ -35,11 +35,42 @@ def latex_main(request):
     return render(request, "core/latex_renderer.html", context)
 
 def render_template(request):
+
+    def get_model(model_name):
+        for model in addable_model:
+            if model._meta.model_name == model_name:
+                return model
+        return None
+
     context = {}
     for key in request.POST.keys():
         if key not in ['csrfmiddlewaretoken', 'encoding']:
-            key_value = json.loads(request.POST[key])
-            context[key] = key_value["value"]
+            form_input_value = json.loads(request.POST[key])
+            if form_input_value["type"] == "tr":
+                input_datas = form_input_value["value"].split(',')
+                input_model_name = None
+                rec_ids = []
+                for input_data in input_datas:
+                    data_model_name, data_rec_id = input_data.split('#')
+                    input_model_name = data_model_name.strip()
+                    rec_ids.append(int(data_rec_id.strip()))
+                model = get_model(input_model_name)
+                model_field_type_mapping = dict([(field.name, field.is_relation) for field in model._meta.fields])
+                columns_to_include = json.loads(form_input_value["cells"])
+                recs = model.objects.filter(id__in=rec_ids)
+                context_values = []
+                for rec in recs:
+                    context_value = {}
+                    for col in columns_to_include:
+                        column_data = getattr(rec, col)
+                        if not model_field_type_mapping[col]:
+                            context_value[col] = column_data
+                        else:
+                            context_value[col] = column_data.__str__()
+                    context_values.append(context_value)
+                context[key] = context_values
+            else:
+                context[key] = form_input_value["value"]
     latex = render_latex_pdf(context)
     return render(request, "core/clicked.html", {"pdf_path": latex})
 
