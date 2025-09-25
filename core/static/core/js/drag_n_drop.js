@@ -1,11 +1,6 @@
 let dataToInsert = null;
 let selectedData = []
 
-function dragstartHandler(ev) {
-    /* start the drag of selected data */
-    ev.dataTransfer.setData("text", ev.target.id);
-}
-
 function dropHandler(ev) {
     // drops the selected data to conteiner
     ev.preventDefault();
@@ -50,12 +45,6 @@ function resetSelectedCell() {
     }
 }
 
-function addTo(ev) {
-    ev.stopPropagation();
-    dataToInsert = ev.target.previousSibling.innerText;
-    appendButtonsToContextList();
-}
-
 
 function insertInto(ev) {
     // inserts selected data into input fields
@@ -72,7 +61,7 @@ function insertInto(ev) {
         elementToInsert.dataset.type = 'tr';
         const selectedTh = document.querySelectorAll('th.table-header-selected');
         elementToInsert.dataset.cells = JSON.stringify([...selectedTh].map(th => th.dataset.recFieldName));
-        selectedTh.forEach( th => th.classList.remove('table-header-selected'))
+        selectedTh.forEach(th => th.classList.remove('table-header-selected'))
         if (selectedTh.length > 0) {
             selectedTh[0].parentElement.classList.remove("table-header-highlight");
         }
@@ -92,29 +81,66 @@ function insertInto(ev) {
 
 
 function addDataToSelection(dataElement) {
+    // adds to the selectedData
     dataElement.classList.add("selected");
     dataElement.dataset.selectedDataIndex = selectedData.length;
     selectedData.push({...dataElement.dataset, type: dataElement.tagName.toLowerCase()})
 }
 
 function removeDataFromSelection(dataElement) {
+    // removes from the selectedData
     dataElement.classList.remove("selected");
     const dataElementIndex = parseInt(dataElement.dataset.selectedDataIndex);
     selectedData.splice(dataElementIndex, 1);
 }
 
+
+function addHeaderSelection(element) {
+    element.classList.add("table-header-selected");
+}
+
+function removeHeaderSelection(element) {
+    element.classList.remove("table-header-selected")
+}
+
+function removeAllHeaderSelection(dataElement) {
+    const selectedTdSelector = "#record-list-" + dataElement.dataset.recModel + " .table-header-selected";
+    const allSelectedHeadElements = document.querySelectorAll(selectedTdSelector);
+    allSelectedHeadElements.forEach(headElement => headElement.classList.remove("table-header-selected"))
+
+}
+
 function toggleHeaderSelection(ev) {
     ev.stopPropagation();
     if (ev.target.tagName.toLowerCase() === "th" && ev.target.parentElement.classList.contains("table-header-highlight")) {
-        ev.target.classList.add("table-header-selected");
+        if (ev.target.classList.contains("table-header-selected")) {
+            removeHeaderSelection(ev.target);
+        } else {
+            addHeaderSelection(ev.target);
+        }
     }
 }
 
-function heightLightTableHeader(dataElement) {
+function addHeightLightTableHeader(theadElement) {
+    theadElement.classList.add("table-header-highlight");
+}
+
+function removeHeightLightTableHeader(theadElement) {
+    theadElement.classList.remove("table-header-highlight");
+}
+
+function toggleHeightLightTableHeader(dataElement) {
     if (dataElement.tagName.toLowerCase() === 'tr') {
         const theadSelector = "#record-list-" + dataElement.dataset.recModel + " thead > tr";
         let theadElement = document.querySelector(theadSelector);
-        theadElement.classList.add("table-header-highlight");
+        const selectedDataLen = selectedData.length;
+        if (selectedDataLen > 0) {
+            addHeightLightTableHeader(theadElement);
+        }
+        else {
+            removeAllHeaderSelection(dataElement);
+            removeHeightLightTableHeader(theadElement);
+        }
     }
 }
 
@@ -124,12 +150,14 @@ function toggleSelection(ev) {
     while (!dataTarget.classList.contains("selectable")) {
         dataTarget = dataTarget.parentElement;
     }
-    heightLightTableHeader(dataTarget);
+
     if (!dataTarget.classList.contains("selected")) {
         addDataToSelection(dataTarget);
     } else {
         removeDataFromSelection(dataTarget);
     }
+
+    toggleHeightLightTableHeader(dataTarget);
 
     if (!isEmptySelectedData()) {
         appendButtonsToContextList();
@@ -147,8 +175,6 @@ function isEmptySelectedData() {
 
 function generatePostParams(ev) {
     const inputs = document.querySelectorAll('#context-list input[type="text"]');
-
-    const structuredData = {};
 
     inputs.forEach(input => {
         ev.detail.parameters[input.name] = {
