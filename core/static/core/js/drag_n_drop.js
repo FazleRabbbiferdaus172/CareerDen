@@ -1,5 +1,8 @@
 let dataToInsert = null;
-let selectedData = []
+let selectedData = [];
+let defaultCellDelimiter = " ";
+let defaultRowDelimiter = ", "
+let chosenDelimiter = null;
 
 function dropHandler(ev) {
     // drops the selected data to conteiner
@@ -46,32 +49,79 @@ function resetSelectedCell() {
 }
 
 
+function generateDilogBoxForDelimiter(elementToInsert) {
+    // generates a dilog box element
+    function submitDelimiter(ev) {
+        ev.stopPropagation();
+        let inputElement = ev.target.previousElementSibling;
+        chosenDelimiter = inputElement.value;
+        insertCellData(elementToInsert);
+        dialogBox.close();
+    }
+
+    function closeModal(ev) {
+        ev.stopPropagation();
+        dialogBox.close();
+    }
+
+    let dialogBox = document.createElement("dialog");
+    let dialogInputLabel = document.createElement("span");
+    dialogInputLabel.innerText = "Delimiter";
+    dialogBox.appendChild(dialogInputLabel);
+
+    let dialogInput = document.createElement("input");
+    dialogInput.type = "text";
+    dialogInput.required = true;
+    dialogInput.name = "delimiter";
+    dialogBox.appendChild(dialogInput);
+
+    let submitButton = document.createElement("button");
+    submitButton.innerText = "select";
+    submitButton.addEventListener("click", submitDelimiter);
+    dialogBox.appendChild(submitButton);
+
+    let closeButton = document.createElement("button");
+    closeButton.innerText = "close";
+    closeButton.addEventListener("click", closeModal);
+    dialogBox.appendChild(closeButton);
+    return dialogBox;
+}
+
+const insertCellData = function (elementToInsert) {
+    // inserts selected cell data into input field
+    elementToInsert.value = selectedData.filter(data => data.type === 'td').map((data) => data.cellValue).join(chosenDelimiter || defaultCellDelimiter);
+    elementToInsert.dataset.type = 'td';
+    elementToInsert.dataset.cells = JSON.stringify([]);
+}
+
+const insertRowData = function (elementToInsert) {
+    // inserts selected row data into input field
+    elementToInsert.value = selectedData.filter(data => data.type === 'tr').map((data) => "" + data.recModel + "#" + data.recId).join(defaultRowDelimiter);
+    elementToInsert.dataset.type = 'tr';
+    const selectedTh = document.querySelectorAll('th.table-header-selected');
+    elementToInsert.dataset.cells = JSON.stringify([...selectedTh].map(th => th.dataset.recFieldName));
+    selectedTh.forEach(th => th.classList.remove('table-header-selected'))
+    if (selectedTh.length > 0) {
+        selectedTh[0].parentElement.classList.remove("table-header-highlight");
+    }
+}
+
 function insertInto(ev) {
     // inserts selected data into input fields
     ev.stopPropagation();
 
-    const insertCellData = function () {
-        elementToInsert.value = selectedData.filter(data => data.type === 'td').map((data) => data.cellValue).join(" ");
-        elementToInsert.dataset.type = 'td';
-        elementToInsert.dataset.cells = JSON.stringify([]);
-    }
-
-    const insertRowData = function () {
-        elementToInsert.value = selectedData.filter(data => data.type === 'tr').map((data) => "" + data.recModel + "#" + data.recId).join(", ");
-        elementToInsert.dataset.type = 'tr';
-        const selectedTh = document.querySelectorAll('th.table-header-selected');
-        elementToInsert.dataset.cells = JSON.stringify([...selectedTh].map(th => th.dataset.recFieldName));
-        selectedTh.forEach(th => th.classList.remove('table-header-selected'))
-        if (selectedTh.length > 0) {
-            selectedTh[0].parentElement.classList.remove("table-header-highlight");
-        }
-    }
-
     const elementToInsert = ev.target.previousElementSibling;
     if (selectedData[0].type === 'td') {
-        insertCellData()
+        if (selectedData.length > 1) {
+            const dialogBox = generateDilogBoxForDelimiter(elementToInsert);
+            document.querySelector("main").appendChild(dialogBox);
+            dialogBox.showModal();
+            return;
+        } else {
+            insertCellData(elementToInsert);
+        }
     } else {
-        insertRowData()
+        insertRowData(elementToInsert);
     }
     dataToInsert = null;
     selectedData = [];
@@ -136,8 +186,7 @@ function toggleHeightLightTableHeader(dataElement) {
         const selectedDataLen = selectedData.length;
         if (selectedDataLen > 0) {
             addHeightLightTableHeader(theadElement);
-        }
-        else {
+        } else {
             removeAllHeaderSelection(dataElement);
             removeHeightLightTableHeader(theadElement);
         }
