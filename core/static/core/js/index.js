@@ -65,14 +65,22 @@ function generateDilogBoxForDelimiter(elementToInsert) {
     }
 
     let dialogBox = document.createElement("dialog");
-    let dialogInputLabel = document.createElement("span");
+    let dialogInputLabel = document.createElement("label");
+    dialogInputLabel.setAttribute("for", "delimiter");
     dialogInputLabel.innerText = "Delimiter";
     dialogBox.appendChild(dialogInputLabel);
 
-    let dialogInput = document.createElement("input");
-    dialogInput.type = "text";
+    let dialogInput = document.createElement("select");
     dialogInput.required = true;
     dialogInput.name = "delimiter";
+    const spaceOption = document.createElement("option");
+    spaceOption.value = " ";
+    spaceOption.innerText = "SPACE";
+    dialogInput.appendChild(spaceOption);
+    const commaOption = document.createElement("option");
+    commaOption.value = ", ";
+    commaOption.innerText = "COMMA";
+    dialogInput.appendChild(commaOption);
     dialogBox.appendChild(dialogInput);
 
     let submitButton = document.createElement("button");
@@ -92,6 +100,7 @@ const insertCellData = function (elementToInsert) {
     elementToInsert.value = selectedData.filter(data => data.type === 'td').map((data) => data.cellValue).join(chosenDelimiter || defaultCellDelimiter);
     elementToInsert.dataset.type = 'td';
     elementToInsert.dataset.cells = JSON.stringify([]);
+    cleanAfterInsert();
 }
 
 const insertRowData = function (elementToInsert) {
@@ -104,6 +113,14 @@ const insertRowData = function (elementToInsert) {
     if (selectedTh.length > 0) {
         selectedTh[0].parentElement.classList.remove("table-header-highlight");
     }
+    cleanAfterInsert();
+}
+
+function cleanAfterInsert() {
+    dataToInsert = null;
+    selectedData = [];
+    removeButtonsFromContextList();
+    resetSelectedCell();
 }
 
 function insertInto(ev) {
@@ -123,10 +140,6 @@ function insertInto(ev) {
     } else {
         insertRowData(elementToInsert);
     }
-    dataToInsert = null;
-    selectedData = [];
-    removeButtonsFromContextList();
-    resetSelectedCell();
 }
 
 

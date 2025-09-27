@@ -8,7 +8,7 @@
             <tr onclick="toggleHeaderSelection(event)">
                 <th></th>
                 {% for field_name in model.field_names %}
-                    <th data-rec-field-name="{{ field_name }}">{{ field_name }}</th>
+                    <th data-rec-field-name="{{ field_name }}">{{ field_name|capfirst }}</th>
                 {% endfor %}
             </tr>
             </thead>
