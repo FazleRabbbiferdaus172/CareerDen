@@ -3,7 +3,7 @@
     <div id="required-context-detail">
         <ul id="context-list">
             {% for k in required_template_context %}
-                <li><span>{{ k }} : </span><input id="rc-{{ k }}" name="{{ k }}" type="text" data-type="td" ondrop="dropHandler"></li>
+                <li><label for="{{ k }}">{{ k|capfirst }} : </label><input id="rc-{{ k }}" name="{{ k }}" type="text" data-type="td" ondrop="dropHandler"></li>
             {% endfor %}
         </ul>
     </div>
